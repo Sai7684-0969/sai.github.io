@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Executor Request Form</title>
+  <style>
+    body {
+      background-image: url('download.jpeg'); /* Assuming 'download.jpeg' is in the same directory */
+      background-size: cover; 
+    }
+
+    form {
+      background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background for the form */
+      padding: 20px;
+      border-radius: 5px;
+    }
+
+    input[type="text"], input[type="email"], select {
+      background-color: black; 
+      color: white;
+      border: 1px solid #ccc; 
+      border-radius: 3px;
+      padding: 10px; 
+      margin-bottom: 10px;
+    }
+
+    label {
+      color: white;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    h1 {
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Executor Request Form</h1>
+
+  <form id="contactForm">
+    <label for="name">Name:</label><br>
+    <input type="text" id="name" name="name" required><br><br>
+
+    <label for="email">Email:</label><br>
+    <input type="email" id="email" name="email" required><br><br>
+
+    <label for="executor">What Executor Do You Need?</label><br>
+    <select id="executor" name="executor" required>
+      <optgroup label="High-Tier">
+        <option value="Arceus x neo">Arceus x neo (The Best With W-Azure)</option>
+      </optgroup>
+      <optgroup label="Mid-Tier">
+        <option value="Codex">Codex (Mid For Auto Execute )</option>
+        <option value="Delta">Delta (A Bit Good)</option>
+      </optgroup>
+      <optgroup label="Low-Tier">
+        <option value="Fluxus">Fluxus (Kinda Dead)</option>
+        <option value="Vega X">Vega X (Low / Not That Good)</option>
+      </optgroup>
+    </select><br><br>
+
+    <input type="submit" value="Submit">
+  </form>
+
+  <script>
+    const form = document.getElementById('contactForm');
+    const webhookUrl = 'https://discord.com/api/webhooks/1322131609088032810/V3xc2gaA4YOtzSgYpDhPePk-Cc73To2hys4hI2mqhhZjGQr92B76oIdw2i4wAzVclrBb'; 
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const formData = new FormData(form);
+      const name = formData.get('name');
+      const email = formData.get('email');
+      const executor = formData.get('executor');
+
+      const data = {
+        content: `**New Executor Request!**\n\n**User:** ${name}\n**Email:** ${email}\n**Requested Executor:** **${executor}**` 
+      };
+
+      try {
+        const response = await fetch(webhookUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+          alert('Request sent successfully!');
+          form.reset(); // Clear form fields after successful submission
+        } else {
+          alert('Error sending request. Please try again.');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred while sending the request.');
+      }
+    });
+  </script>
+
+</body>
+</html>
